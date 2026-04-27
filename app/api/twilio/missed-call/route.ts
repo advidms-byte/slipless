@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const signature = req.headers.get('x-twilio-signature') || ''
     const url = getWebhookUrl(req)
-    if (!signature || !validateTwilioSignature(signature, url, params)) {
+    if (!signature || !validateTwilioSignature()) {
       return jsonError('Invalid Twilio signature', 403)
     }
 
