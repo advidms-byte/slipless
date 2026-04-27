@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/supabase'
-import { sendSMS, validateTwilioSignature } from '@/lib/twilio'
-import { generateInitialMessage } from '@/lib/ai-agent'
+import { createAdminClient } from '../../../../lib/supabase'
+import { sendSMS, validateTwilioSignature } from '../../../../lib/twilio'
+import { generateInitialMessage } from '../../../../lib/ai-agent'
 
 const MISSED_CALL_STATUSES = new Set(['no-answer', 'busy', 'failed'])
 const REQUIRED_TWILIO_FIELDS = ['CallStatus', 'From', 'To', 'CallSid'] as const
