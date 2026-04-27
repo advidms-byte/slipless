@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { createClient } from '@/lib/supabase'
-import { LeadWithMessages } from '@/lib/database.types'
+import { createClient } from '../../lib/supabase'
+import { LeadWithMessages } from '../../lib/database.types'
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   booked:        { label: 'Booked',      color: '#166534', bg: '#dcfce7' },
