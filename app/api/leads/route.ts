@@ -1,32 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createAdminClient } from '../../../lib/supabase'
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
-export async function GET(req: NextRequest) {
-  const supabase = createAdminClient()
-  const status = req.nextUrl.searchParams.get('status')
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
-  let query = supabase
-    .from('leads')
-    .select(`
-      *,
-      messages (*)
-    `)
-    .order('created_at', { ascending: false })
+export async function GET() {
+  try {
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .order('created_at', { ascending: false })
 
-  if (status && status !== 'all') {
-    query = query.eq('status', status)
+    if (error) {
+      return NextResponse.json({ error: error.message, leads: [] }, { status: 500 })
+    }
+
+    return NextResponse.json({ leads: data || [] })
+  } catch (err) {
+    return NextResponse.json({ error: 'Server error', leads: [] }, { status: 500 })
   }
-
-  const { data, error } = await query
-
-  if (error) {
-    return NextResponse.json(
-      { error: error.message, leads: [] },
-      { status: 500 }
-    )
-  }
-
-  return NextResponse.json({
-    leads: data || [],
-  })
 }
